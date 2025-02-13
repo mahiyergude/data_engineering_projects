@@ -1,18 +1,18 @@
 version: 0.2
 
-env:
-  variables:
-    PROJECT_NAME: "etl-flight-data"
-    PATH: "AWS/$PROJECT_NAME"
-    BUCKET_NAME: "scripts-personal-projects"
-    GLUE_JOB_CONFIG : "$PATH/glue_job_config.json"
-    GLUE_JOB_NAME: "glue-job-$PROJECT_NAME"
+# env:
+#   variables:
+#     PROJECT_NAME: "etl-flight-data"
+#     PATH: "AWS/$PROJECT_NAME"
+#     BUCKET_NAME: "scripts-personal-projects"
+#     GLUE_JOB_CONFIG : "$PATH/glue_job_config.json"
+#     GLUE_JOB_NAME: "glue-job-$PROJECT_NAME"
 
 phases:
   pre_build:
     commands:
       - echo Uploading the script to S3...
-      - aws s3 cp --recursive $PATH s3://$BUCKET_NAME/aws_glue/$PROJECT_NAME
+      - aws s3 cp --recursive $PATH s3://scripts-personal-projects/aws_glue/etl-flight-data
 
   build:
     commands:
