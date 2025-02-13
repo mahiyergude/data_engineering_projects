@@ -11,23 +11,23 @@ env:
 phases:
   install:
     commands:
-      - echo "Installing required dependencies..."
+      - echo Installing required dependencies...
       - pip install --upgrade pip
       - pip install boto3 awscli
 
   pre_build:
     commands:
-      - echo "Uploading the script to S3..."
+      - echo Uploading the script to S3...
       - aws s3 cp --recursive $PATH s3://$BUCKET_NAME/aws_glue/$PROJECT_NAME
 
   build:
     commands:
-      - echo "Checking if AWS Glue job exists..."
+      - echo Checking if AWS Glue job exists...
       - JOB_EXISTS=$(aws glue get-job --job-name $GLUE_JOB_NAME 2>/dev/null || echo "NOT_FOUND")
       - if [ "$JOB_EXISTS" == "NOT_FOUND" ]; then
-          echo "Glue job not found. Creating a new job...";
+          echo Glue job not found. Creating a new job...;
           aws glue create-job --cli-input-json file://$GLUE_JOB_CONFIG;
         else
-          echo "Glue job exists. Updating the job...";
+          echo Glue job exists. Updating the job...;
           aws glue update-job --job-name $GLUE_JOB_NAME --job-update file://$GLUE_JOB_CONFIG;
         fi
