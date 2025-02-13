@@ -6,12 +6,15 @@
         "ScriptLocation": "scripts-personal-projects/aws_glue/etl-flight-data/main.py"
     },
     "DefaultArguments": {
-        "--TempDir": "s3://your-bucket-name/temp/",
+        "--TempDir": "s3://datalake-personal-projects/etl-flight-data/temp/",
         "--job-bookmark-option": "job-bookmark-enable",
+        "--job-language": "python",
         "--enable-metrics": "",
         "--extra-py-files": ""
     },
-    "MaxRetries": 1,
+    "MaxRetries": 0,
     "Timeout": 2880,
-    "GlueVersion": 3.0
+    "WorkerType": "Standard",
+    "NumberOfWorkers": 1,
+    "GlueVersion": "5.0"
 }

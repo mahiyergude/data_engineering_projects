@@ -41,7 +41,7 @@ spark = SparkSession.builder.config(conf=conf).getOrCreate()
 # df = spark.read.option("header", True).csv("file:///datasets/flights.csv", sep=",", inferSchema=True)
 
 #reading from s3
-df = spark.read.option("header", True).csv("s3a://datalake-personal-projects/flights.csv", sep=",", inferSchema=True)
+df = spark.read.option("header", True).csv("s3a://datalake-personal-projects/etl-flight-data/flights.csv", sep=",", inferSchema=True)
 
 
 # Removing column with >90% null values
