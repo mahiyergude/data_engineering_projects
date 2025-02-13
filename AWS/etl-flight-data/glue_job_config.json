@@ -1,0 +1,17 @@
+{
+    "Name": "etl-flight-data",
+    "Role": "arn:aws:iam::123456789012:role/GlueRole",
+    "Command": {
+        "Name": "glueetl",
+        "ScriptLocation": "scripts-personal-projects/aws_glue/etl-flight-data/main.py"
+    },
+    "DefaultArguments": {
+        "--TempDir": "s3://your-bucket-name/temp/",
+        "--job-bookmark-option": "job-bookmark-enable",
+        "--enable-metrics": "",
+        "--extra-py-files": ""
+    },
+    "MaxRetries": 1,
+    "Timeout": 2880,
+    "GlueVersion": 3.0
+}
