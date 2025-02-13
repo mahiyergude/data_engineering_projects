@@ -70,7 +70,7 @@ if __name__ == "__main__":
     path_project_in_bucket = "scripts-personal-projects/aws_glue/etl-flight-data"
     temp_dir = "s3://your-bucket-name/temp/"
     glue_job_name = "etl-flight-data"
-    glue_role_arn = "arn:aws:iam::123456789012:role/GlueRole"
+    glue_role_arn = "arn:aws:codebuild:us-east-1:864826018661:build/etl-flight-data:be473799-eb07-4e7c-8bdb-da0dda97d3d8"
     glue_version = "5.0"
 
     try:
