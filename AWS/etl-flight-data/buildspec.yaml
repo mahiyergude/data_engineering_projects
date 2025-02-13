@@ -9,13 +9,6 @@ env:
     GLUE_JOB_NAME: "glue-job-$PROJECT_NAME"
 
 phases:
-  install:
-    runtime-versions:
-      python: 3.10 # Use the Python version compatible with AWS Glue
-    commands:
-      - pip install --upgrade pip
-      - pip install boto3 awscli
-
   pre_build:
     commands:
       - echo Uploading the script to S3...
