@@ -8,12 +8,13 @@ env:
     GLUE_JOB_CONFIG : "$PATH/glue_job_config.json"
     GLUE_JOB_NAME: "glue-job-$PROJECT_NAME"
 
-
 phases:
   install:
     runtime-versions:
       python: 3.9 # Use the Python version compatible with AWS Glue
     commands:
+      - python3 -m venv /root/venv
+      - . /root/venv/bin/activate
       - echo "Installing required dependencies..."
       - pip install --upgrade pip
       - pip install boto3 awscli
