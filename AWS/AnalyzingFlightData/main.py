@@ -1,18 +1,48 @@
 from pyspark.sql import SparkSession
+from pyspark.conf import SparkConf
 from pyspark.sql.functions import col, mean, sum, count, max, min, when, concat_ws
 from pyspark.sql.window import Window
-import boto3
+from dotenv import load_dotenv
+import os
 
-#Authentication AWS
-session = boto3.Session()
-credentials = session.get_credentials()
+# load .env vars
+env_file_exists = os.path.exists(".env")
+if env_file_exists==True:
+    load_dotenv(".env")
+    aws_access_key_id = os.getenv("aws_access_key_id")
+    aws_secret_access_key = os.getenv("aws_secret_access_key")
+    conf = (
+    SparkConf()
+    .setAppName("Analyzing Flight Data") # replace with your desired name
+    .set("spark.jars.packages", "io.delta:delta-core_2.12:2.3.0,org.apache.hadoop:hadoop-aws:3.3.2")
+    .set("spark.sql.catalog.spark_catalog","org.apache.spark.sql.delta.catalog.DeltaCatalog")
+    .set("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+    .set("spark.hadoop.fs.s3a.access.key", aws_access_key_id)
+    .set("spark.hadoop.fs.s3a.secret.key", aws_secret_access_key)
+    .set("spark.sql.shuffle.partitions", "4") # default is 200 partitions which is too many for local
+    .setMaster("local[*]") # replace the * with your desired number of cores. * for use all.
+)
+else:
+    conf = (
+    SparkConf()
+    .setAppName("Analyzing Flight Data") # replace with your desired name
+    .set("spark.jars.packages", "io.delta:delta-core_2.12:2.3.0,org.apache.hadoop:hadoop-aws:3.3.2")
+    .set("spark.sql.catalog.spark_catalog","org.apache.spark.sql.delta.catalog.DeltaCatalog")
+    .set("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+    .set("spark.sql.shuffle.partitions", "4") # default is 200 partitions which is too many for local
+    .setMaster("local[*]") # replace the * with your desired number of cores. * for use all.
+    )
 
 
-spark = SparkSession.builder.master("local[2]").appName("Analyzing Flight Data").getOrCreate()
 
+spark = SparkSession.builder.config(conf=conf).getOrCreate()
 
 #reading local file need "file:///"
-df = spark.read.option("header", True).csv("file:///home/claudiocm/Git/data_engineering_projects/AWS/AnalyzingFlightData/datasets", sep=",", inferSchema=True)
+# df = spark.read.option("header", True).csv("file:///datasets/flights.csv", sep=",", inferSchema=True)
+
+#reading from s3
+df = spark.read.option("header", True).csv("s3a://datalake-personal-projects/flights.csv", sep=",", inferSchema=True)
+
 
 # Removing column with >90% null values
 threshold_nulls = 0.9
