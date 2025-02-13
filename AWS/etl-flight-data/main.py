@@ -196,3 +196,5 @@ df_route_analysis = df.groupBy("year","month","hour","route").agg(
     mean("route_year_month_total_flights").alias("route_year_month_total_flights"),
     mean("route_year_hour_total_flights").alias("route_year_hour_total_flights"),
 ).show()
+
+
