@@ -1,9 +1,9 @@
 {
-    "Name": "etl-flight-data",
+    "Name": "glue-job-etl-flight-data",
     "Role": "arn:aws:iam::864826018661:role/GlueETLRole",
     "Command": {
         "Name": "glueetl",
-        "ScriptLocation": "scripts-personal-projects/aws_glue/etl-flight-data/main.py"
+        "ScriptLocation": "s3://scripts-personal-projects/aws_glue/etl-flight-data/main.py"
     },
     "DefaultArguments": {
         "--TempDir": "s3://your-bucket-name/temp/",
