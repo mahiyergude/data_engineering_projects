@@ -1,40 +1,32 @@
 version: 0.2
 
-env:
-  variables:
-    PROJECT_NAME: "etl-flight-data"
-    PATH: "AWS/$PROJECT_NAME"
-    BUCKET_NAME: "scripts-personal-projects"
-    GLUE_JOB_CONFIG : "$PATH/glue_job_config.json"
-    GLUE_JOB_NAME: "glue-job-$PROJECT_NAME"
+#This file shows how to package a Python Flask application. 
 
 phases:
   install:
-    runtime-versions:
-      python: 3.10 # Use the Python version compatible with AWS Glue
     commands:
-      - echo "Using yum to install coreutils..."
-      - yum install -y coreutils
-      - echo "Setting up virtual environment..."
-      - python3 -m venv /root/venv
-      - . /root/venv/bin/activate
-      - echo "Installing required dependencies..."
-      - pip install --upgrade pip
-      - pip install boto3 awscli
+      - echo Installing dependencies...
+      - pip install -r requirements.txt  # Install dependencies listed in requirements.txt
 
   pre_build:
     commands:
-      - echo "Uploading the script to S3..."
-      - aws s3 cp --recursive $PATH s3://$BUCKET_NAME/aws_glue/$PROJECT_NAME
+      - echo Running tests...
+      - pytest --junitxml=report.xml  # Run pytest and generate a report in XML format
 
   build:
     commands:
-      - echo "Checking if AWS Glue job exists..."
-      - JOB_EXISTS=$(aws glue get-job --job-name $GLUE_JOB_NAME 2>/dev/null || echo "NOT_FOUND")
-      - if [ "$JOB_EXISTS" == "NOT_FOUND" ]; then
-          echo "Glue job not found. Creating a new job...";
-          aws glue create-job --cli-input-json file://$GLUE_JOB_CONFIG;
-        else
-          echo "Glue job exists. Updating the job...";
-          aws glue update-job --job-name $GLUE_JOB_NAME --job-update file://$GLUE_JOB_CONFIG;
-        fi
+      - echo Zipping up the application...
+      - zip -r app.zip .  # Zip the entire project directory
+
+  post_build:
+    commands:
+      - echo Build completed. Checking if an artifact has been uploaded to S3...
+      - aws s3 ls s3://<OUTPUT-Directory-Name>/artifacts/app.zip || echo "Artifact not found in S3."  # Verify the artifact upload
+      - echo All build steps are complete.
+
+artifacts:
+  files:
+    - app.zip  # Include the zipped code as an artifact
+    - report.xml  # Include the test report as an artifact
+  discard-paths: yes  # Flatten the directory structure in S3
+  base-directory: .  # Root directory for artifacts
