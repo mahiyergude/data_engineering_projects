@@ -9,10 +9,10 @@ env:
     GLUE_JOB_NAME: "glue-job-$PROJECT_NAME"
 
 phases:
-  pre_build:
-    commands:
-      - echo Uploading the script to S3...
-      - aws s3 cp --recursive $PATH_SCRIPT s3://scripts-personal-projects/aws_glue/$PROJECT_NAME
+  # pre_build:
+  #   commands:
+  #     - echo Uploading the script to S3...
+  #     - aws s3 cp --recursive $PATH_SCRIPT s3://scripts-personal-projects/aws_glue/$PROJECT_NAME
 
   build:
     commands:
