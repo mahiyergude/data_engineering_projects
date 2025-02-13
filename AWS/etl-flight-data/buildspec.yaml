@@ -11,7 +11,7 @@ env:
 phases:
   install:
     runtime-versions:
-      python: 3.9 # Use the Python version compatible with AWS Glue
+      python: 3.10 # Use the Python version compatible with AWS Glue
     commands:
       - apt-get install cat
       - python3 -m venv /root/venv
