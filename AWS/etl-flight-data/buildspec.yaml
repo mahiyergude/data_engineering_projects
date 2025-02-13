@@ -3,7 +3,7 @@ version: 0.2
 env:
   variables:
     PROJECT_NAME: "etl-flight-data"
-    PATH: "AWS/$PROJECT_NAME/"
+    PATH: "AWS/$PROJECT_NAME"
     BUCKET_NAME: "scripts-personal-projects"
     GLUE_JOB_CONFIG : "$PATH/glue_job_config.json"
     GLUE_JOB_NAME: "glue-job-$PROJECT_NAME"
@@ -34,9 +34,3 @@ phases:
           echo "Glue job exists. Updating the job...";
           aws glue update-job --job-name $GLUE_JOB_NAME --job-update file://$GLUE_JOB_CONFIG;
         fi
-
-artifacts:
-  files:
-    - your_script.py
-    - your_script.zip
-  discard-paths: yes
