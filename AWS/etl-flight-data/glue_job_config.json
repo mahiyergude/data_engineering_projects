@@ -1,6 +1,6 @@
 {
     "Name": "etl-flight-data",
-    "Role": "arn:aws:iam::864826018661:role/service-role/codebuild-etl-flight-data-service-role",
+    "Role": "arn:aws:iam::864826018661:role/GlueETLRole",
     "Command": {
         "Name": "glueetl",
         "ScriptLocation": "scripts-personal-projects/aws_glue/etl-flight-data/main.py"
