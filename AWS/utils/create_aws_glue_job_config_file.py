@@ -51,12 +51,15 @@ def generate_glue_job_config(local_folder_with_scripts, path_project_in_bucket, 
         "DefaultArguments": {
             "--TempDir": temp_dir,
             "--job-bookmark-option": "job-bookmark-enable",
+            "--job-language": "python",
             "--enable-metrics": "",
             "--extra-py-files": extra_py_files
         },
-        "MaxRetries": 1,
+        "MaxRetries": 0,
         "Timeout": 2880,
-        "GlueVersion": glue_version
+        "WorkerType": "Standard",
+        "NumberOfWorkers": 1,
+        "GlueVersion": str(glue_version)
     }
 
     return glue_job_config
@@ -68,7 +71,7 @@ if __name__ == "__main__":
     temp_dir = "s3://your-bucket-name/temp/"
     glue_job_name = "etl-flight-data"
     glue_role_arn = "arn:aws:iam::123456789012:role/GlueRole"
-    glue_version = 5.0
+    glue_version = "5.0"
 
     try:
         glue_job_config = generate_glue_job_config(
