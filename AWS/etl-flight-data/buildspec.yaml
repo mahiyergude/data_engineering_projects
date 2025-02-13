@@ -13,8 +13,8 @@ phases:
     runtime-versions:
       python: 3.10 # Use the Python version compatible with AWS Glue
     commands:
-      - echo "Installing core utilities..."
-      - apt-get update && apt-get install -y coreutils  # Install core utilities, including cat
+      - echo "Using yum to install coreutils..."
+      - yum install -y coreutils
       - echo "Setting up virtual environment..."
       - python3 -m venv /root/venv
       - . /root/venv/bin/activate
