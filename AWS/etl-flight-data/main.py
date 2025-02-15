@@ -245,7 +245,7 @@ dynamic_frame_route = DynamicFrame.fromDF(df_route_analysis, glueContext, "route
 glueContext.write_dynamic_frame.from_options(
     frame=dynamic_frame_carrier,
     connection_type="s3",
-    connection_options={"path": "s3://{bucket_name}/{project_name}/curated/carrier_analysis/", 
+    connection_options={"path": f"s3://{bucket_name}/{project_name}/curated/carrier_analysis/", 
                         "partitionKeys": ["year", "carrier"]},
     format="parquet"
 )
@@ -253,7 +253,7 @@ glueContext.write_dynamic_frame.from_options(
 glueContext.write_dynamic_frame.from_options(
     frame=dynamic_frame_route,
     connection_type="s3",
-    connection_options={"path": "s3://{bucket_name}/{project_name}/curated/route_analysis/", 
+    connection_options={"path": f"s3://{bucket_name}/{project_name}/curated/route_analysis/", 
                         "partitionKeys": ["year", "route"]},
     format="parquet"
 )
