@@ -68,10 +68,10 @@ def generate_glue_job_config(local_folder_with_scripts, path_project_in_bucket, 
 if __name__ == "__main__":
     local_folder_with_scripts = "/home/claudiocm/Git/data_engineering_projects/AWS/etl-flight-data"
     path_project_in_bucket = "scripts-personal-projects/aws_glue/etl-flight-data"
-    temp_dir = "s3://your-bucket-name/temp/"
+    temp_dir = "s3://scripts-personal-projects/aws_glue/temp/"
     glue_job_name = "etl-flight-data"
     glue_role_arn = "arn:aws:iam::864826018661:role/GlueETLRole"
-    glue_version = "5.0"
+    glue_version = "4.0"
 
     try:
         glue_job_config = generate_glue_job_config(

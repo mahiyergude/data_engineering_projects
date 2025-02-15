@@ -1,61 +1,98 @@
 from pyspark.sql import SparkSession
+from awsglue.context import GlueContext
+from awsglue.dynamicframe import DynamicFrame
 from pyspark.conf import SparkConf
-from pyspark.sql.functions import col, mean, sum, count, max, min, when, concat_ws
+from pyspark.sql.functions import col, mean, sum, count, concat_ws, udf
 from pyspark.sql.window import Window
-from dotenv import load_dotenv
 import os
 
-# load .env vars
-env_file_exists = os.path.exists(".env")
-if env_file_exists==True:
-    load_dotenv(".env")
-    aws_access_key_id = os.getenv("aws_access_key_id")
-    aws_secret_access_key = os.getenv("aws_secret_access_key")
-    conf = (
-    SparkConf()
-    .setAppName("Analyzing Flight Data") # replace with your desired name
-    .set("spark.jars.packages", "io.delta:delta-core_2.12:2.3.0,org.apache.hadoop:hadoop-aws:3.3.2")
-    .set("spark.sql.catalog.spark_catalog","org.apache.spark.sql.delta.catalog.DeltaCatalog")
-    .set("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-    .set("spark.hadoop.fs.s3a.access.key", aws_access_key_id)
-    .set("spark.hadoop.fs.s3a.secret.key", aws_secret_access_key)
-    .set("spark.sql.shuffle.partitions", "4") # default is 200 partitions which is too many for local
-    .setMaster("local[*]") # replace the * with your desired number of cores. * for use all.
-)
-else:
-    conf = (
-    SparkConf()
-    .setAppName("Analyzing Flight Data") # replace with your desired name
-    .set("spark.jars.packages", "io.delta:delta-core_2.12:2.3.0,org.apache.hadoop:hadoop-aws:3.3.2")
-    .set("spark.sql.catalog.spark_catalog","org.apache.spark.sql.delta.catalog.DeltaCatalog")
-    .set("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-    .set("spark.sql.shuffle.partitions", "4") # default is 200 partitions which is too many for local
-    .setMaster("local[*]") # replace the * with your desired number of cores. * for use all.
-    )
+bucket_name = "datalake-personal-projects"
+project_name = "etl-flight-data"
 
 
+spark = SparkSession.builder.appName("etl-flight-data").getOrCreate()
 
-spark = SparkSession.builder.config(conf=conf).getOrCreate()
+glueContext = GlueContext(spark)
 
 #reading local file need "file:///"
 # df = spark.read.option("header", True).csv("file:///datasets/flights.csv", sep=",", inferSchema=True)
 
 #reading from s3
-df = spark.read.option("header", True).csv("s3a://datalake-personal-projects/etl-flight-data/flights.csv", sep=",", inferSchema=True)
+# df = spark.read.option("header", True).csv("s3a://datalake-personal-projects/etl-flight-data/flights.csv", sep=",", inferSchema=True)
+
+# Read data from the data source
+df_frame = glueContext.create_dynamic_frame.from_catalog(
+ database="personal-projects",
+ table_name="raw-flight-data"
+)
 
 
-# Removing column with >90% null values
-threshold_nulls = 0.9
-row_count = df.count()
+df_frame = glueContext.create_dynamic_frame_from_options(connection_type="s3",
+                                              connection_options= {"paths": [f"s3://{bucket_name}/{project_name}/raw/flights.csv"]},
+                                              format = "csv",
+                                              format_options={
+                                                  "withHeader": True                                              
+                                                  })
 
-columns_to_keep = [
-    col_name
-    for col_name in df.columns
-    if df.filter(col(col_name).isNotNull()).count()/row_count > threshold_nulls
+#defining schema
+mapping = [
+    ("id", "int", "id", "int"),
+    ("year", "int", "year", "int"),
+    ("month", "int", "month", "int"),
+    ("day", "int", "day", "int"),
+    ("dep_time", "double", "dep_time", "double"),
+    ("sched_dep_time", "int", "sched_dep_time", "int"),
+    ("dep_delay", "double", "dep_delay", "double"),
+    ("arr_time", "double", "arr_time", "double"),
+    ("sched_arr_time", "int", "sched_arr_time", "int"),
+    ("arr_delay", "double", "arr_delay", "double"),
+    ("carrier", "string", "carrier", "string"),
+    ("flight", "int", "flight", "int"),
+    ("tailnum", "string", "tailnum", "string"),
+    ("origin", "string", "origin", "string"),
+    ("dest", "string", "dest", "string"),
+    ("air_time", "double", "air_time", "double"),
+    ("distance", "int", "distance", "int"),
+    ("hour", "int", "hour", "int"),
+    ("minute", "int", "minute", "int"),
+    ("time_hour", "timestamp", "time_hour", "timestamp"),
+    ("name", "string", "name", "string")
 ]
 
-# Drop columns with more than 90% null values
-df = df.select(*columns_to_keep)
+#forcing types in dynamicFrame
+spec_resolveChoice = [(tuple[2], "cast:" + str(tuple[3])) for tuple in mapping]
+df_frame = df_frame.resolveChoice(specs=spec_resolveChoice)
+
+# # Apply mapping
+# df_frame = df_frame.apply_mapping(mapping)
+
+# Convert DynamicFrame to DataFrame for easier handling
+df = df_frame.toDF()
+
+
+# Handling with null values
+col_with_nullValues=[]
+for column in df.columns:
+    n=df.filter(col(column).isNull()).count()
+    if n !=0:
+        print(f"{column}: {n}")
+        col_with_nullValues.append(column)
+print(f"Columns with null values: {col_with_nullValues}")
+
+string_cols = [field.name for field in df.schema.fields if field.dataType.simpleString() == "string" and field.name in col_with_nullValues]
+numeric_cols = [field.name for field in df.schema.fields if field.dataType.simpleString() in ("int", "double") and field.name in col_with_nullValues]
+
+# Drop rows where any string column has null
+df = df.dropna(subset=string_cols)
+
+#computing means for each numeric column
+means = df.select(
+    *[mean(col(col_name)).alias(col_name) for col_name in numeric_cols]
+).collect()[0].asDict()
+
+# Fill missing values in numeric columns with means
+df = df.fillna({**means})
+
 
 # Define window specifications
 carrier_year_month_window = Window.partitionBy("year", "month", "carrier")
@@ -175,7 +212,7 @@ df_carrier_analysis = df.groupBy("year","month","hour","carrier").agg(
     count("flight").alias("carrier_year_month_hour_total_flights"),
     mean("carrier_year_month_total_flights").alias("carrier_year_month_total_flights"),
     mean("carrier_year_hour_total_flights").alias("carrier_year_hour_total_flights"),
-).show()
+)
 
 df_route_analysis = df.groupBy("year","month","hour","route").agg(
     #window functions columns
@@ -195,6 +232,28 @@ df_route_analysis = df.groupBy("year","month","hour","route").agg(
     count("flight").alias("route_year_month_hour_total_flights"),
     mean("route_year_month_total_flights").alias("route_year_month_total_flights"),
     mean("route_year_hour_total_flights").alias("route_year_hour_total_flights"),
-).show()
+)
 
 
+
+
+# Convert DataFrames back to DynamicFrames and write to S3
+dynamic_frame_carrier = DynamicFrame.fromDF(df_carrier_analysis, glueContext, "carrier_analysis")
+dynamic_frame_route = DynamicFrame.fromDF(df_route_analysis, glueContext, "route_analysis")
+
+
+glueContext.write_dynamic_frame.from_options(
+    frame=dynamic_frame_carrier,
+    connection_type="s3",
+    connection_options={"path": "s3://{bucket_name}/{project_name}/curated/carrier_analysis/", 
+                        "partitionKeys": ["year", "carrier"]},
+    format="parquet"
+)
+
+glueContext.write_dynamic_frame.from_options(
+    frame=dynamic_frame_route,
+    connection_type="s3",
+    connection_options={"path": "s3://{bucket_name}/{project_name}/curated/route_analysis/", 
+                        "partitionKeys": ["year", "route"]},
+    format="parquet"
+)
