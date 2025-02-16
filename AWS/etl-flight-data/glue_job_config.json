@@ -10,7 +10,8 @@
         "--job-bookmark-option": "job-bookmark-enable",
         "--job-language": "python",
         "--enable-metrics": "",
-        "--extra-py-files": ""
+        "--extra-py-files": "",
+        "--enable-continuous-cloudwatch-log": "true"
     },
     "MaxRetries": 0,
     "Timeout": 2880,
