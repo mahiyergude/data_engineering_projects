@@ -13,6 +13,7 @@ project_name = "etl-flight-data"
 spark = SparkSession.builder.appName("etl-flight-data").getOrCreate()
 
 glueContext = GlueContext(spark)
+logger = glueContext.get_logger()
 
 #reading local file need "file:///"
 # df = spark.read.option("header", True).csv("file:///datasets/flights.csv", sep=",", inferSchema=True)
@@ -75,9 +76,9 @@ col_with_nullValues=[]
 for column in df.columns:
     n=df.filter(col(column).isNull()).count()
     if n !=0:
-        print(f"{column}: {n}")
+        logger.info(f"{column}: {n}")
         col_with_nullValues.append(column)
-print(f"Columns with null values: {col_with_nullValues}")
+logger.info(f"Columns with null values: {col_with_nullValues}")
 
 string_cols = [field.name for field in df.schema.fields if field.dataType.simpleString() == "string" and field.name in col_with_nullValues]
 numeric_cols = [field.name for field in df.schema.fields if field.dataType.simpleString() in ("int", "double") and field.name in col_with_nullValues]
