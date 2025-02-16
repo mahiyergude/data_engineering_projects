@@ -7,18 +7,16 @@ env:
     BUCKET_NAME: "scripts-personal-projects"    
 
 phases:
-  # pre_build:
-  #   commands:
-  #     - echo Uploading the script to S3...
-  #     - aws s3 cp --recursive $PATH_SCRIPT s3://scripts-personal-projects/aws_glue/$PROJECT_NAME
+  pre_build:
+    commands:
+      - echo Uploading the script to S3...
+      - aws s3 cp --recursive $PATH_SCRIPT s3://scripts-personal-projects/aws_glue/$PROJECT_NAME
 
   build:
     commands:
       - echo Checking if AWS Glue job exists...
       - export GLUE_JOB_NAME="glue-job-$PROJECT_NAME"
       - export GLUE_JOB_CONFIG="$PATH_SCRIPT/glue_job_config.json"
-      - echo $GLUE_JOB_CONFIG
-      - echo $GLUE_JOB_NAME
       - JOB_EXISTS=$(aws glue get-job --job-name $GLUE_JOB_NAME 2>/dev/null || echo "NOT_FOUND")
       - if [ "$JOB_EXISTS" = "NOT_FOUND" ]; then
           echo Glue job not found. Creating a new job...;
