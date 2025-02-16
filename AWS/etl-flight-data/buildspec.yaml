@@ -17,6 +17,8 @@ phases:
   build:
     commands:
       - echo Checking if AWS Glue job exists...
+      - echo $PROJECT_NAME
+      - echo $GLUE_JOB_NAME
       - JOB_EXISTS=$(aws glue get-job --job-name $GLUE_JOB_NAME 2>/dev/null || echo "NOT_FOUND")
       - if [ "$JOB_EXISTS" = "NOT_FOUND" ]; then
           echo Glue job not found. Creating a new job...;
