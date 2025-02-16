@@ -12,7 +12,7 @@ def list_relative_files(folder_path):
     return file_paths
 
 
-def generate_glue_job_config(local_folder_with_scripts, path_project_in_bucket, temp_dir, glue_job_name, glue_role_arn, glue_version="3.0"):
+def generate_glue_job_config(local_folder_with_scripts, path_project_in_bucket, temp_dir, glue_role_arn, glue_version="4.0"):
     """
     Generate a Glue job configuration dynamically.
     
@@ -20,7 +20,6 @@ def generate_glue_job_config(local_folder_with_scripts, path_project_in_bucket, 
         local_folder_with_scripts(str): local folder with scripts to use
         path_project_in_bucket (str): Prefix in the S3 bucket where the scripts are stored.
         temp_dir (str): S3 path for temporary Glue files.
-        glue_job_name (str): Name of the Glue job.
         glue_role_arn (str): ARN of the Glue role.
         glue_version (str): Version of Glue (default: 3.0).
         
@@ -42,7 +41,6 @@ def generate_glue_job_config(local_folder_with_scripts, path_project_in_bucket, 
 
     # Create the Glue job configuration
     glue_job_config = {
-        "Name": glue_job_name,
         "Role": glue_role_arn,
         "Command": {
             "Name": "glueetl",
@@ -53,7 +51,8 @@ def generate_glue_job_config(local_folder_with_scripts, path_project_in_bucket, 
             "--job-bookmark-option": "job-bookmark-enable",
             "--job-language": "python",
             "--enable-metrics": "",
-            "--extra-py-files": extra_py_files
+            "--extra-py-files": extra_py_files,
+            "--etl-enable-container-telemetry-collection": "true"
         },
         "MaxRetries": 0,
         "Timeout": 2880,
@@ -69,7 +68,6 @@ if __name__ == "__main__":
     local_folder_with_scripts = "/home/claudiocm/Git/data_engineering_projects/AWS/etl-flight-data"
     path_project_in_bucket = "scripts-personal-projects/aws_glue/etl-flight-data"
     temp_dir = "s3://scripts-personal-projects/aws_glue/temp/"
-    glue_job_name = "etl-flight-data"
     glue_role_arn = "arn:aws:iam::864826018661:role/GlueETLRole"
     glue_version = "4.0"
 
@@ -78,7 +76,6 @@ if __name__ == "__main__":
             local_folder_with_scripts,
             path_project_in_bucket, 
             temp_dir, 
-            glue_job_name, 
             glue_role_arn,
             glue_version
             )
