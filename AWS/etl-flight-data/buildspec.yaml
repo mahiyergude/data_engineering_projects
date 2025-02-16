@@ -4,9 +4,7 @@ env:
   variables:
     PROJECT_NAME: "etl-flight-data"
     PATH_SCRIPT: "AWS/etl-flight-data"
-    BUCKET_NAME: "scripts-personal-projects"
-    GLUE_JOB_CONFIG : "$PATH_SCRIPT/glue_job_config.json"
-    GLUE_JOB_NAME: "glue-job-$PROJECT_NAME"
+    BUCKET_NAME: "scripts-personal-projects"    
 
 phases:
   # pre_build:
@@ -17,7 +15,8 @@ phases:
   build:
     commands:
       - echo Checking if AWS Glue job exists...
-      - echo $PROJECT_NAME
+      - export GLUE_JOB_NAME="glue-job-$PROJECT_NAME"
+      - export GLUE_JOB_CONFIG="$PATH_SCRIPT/glue_job_config.json"
       - echo $GLUE_JOB_CONFIG
       - echo $GLUE_JOB_NAME
       - JOB_EXISTS=$(aws glue get-job --job-name $GLUE_JOB_NAME 2>/dev/null || echo "NOT_FOUND")
