@@ -11,7 +11,8 @@
         "--job-language": "python",
         "--enable-metrics": "",
         "--extra-py-files": "",
-        "--enable-continuous-cloudwatch-log": "true"
+        "--enable-continuous-cloudwatch-log": "true",
+        "--etl-enable-container-telemetry-collection": "true"
     },
     "MaxRetries": 0,
     "Timeout": 2880,
