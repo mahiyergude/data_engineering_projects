@@ -111,87 +111,42 @@ df = df.withColumn("route", concat_ws("-", col("origin"), col("dest")))
 ##### WINDOW FUNCTION COLUMNS #######
 ##### CARRIER #######################################
 #arrive delay
-df = df.withColumn(
-    "carrier_year_hour_avg_arr_delay", mean("arr_delay").over(carrier_year_hour_window)
-    )
-df = df.withColumn(
-    "carrier_year_month_avg_arr_delay", mean("arr_delay").over(carrier_year_month_window)
-    )
-df = df.withColumn(
-    "carrier_year_avg_arr_delay", mean("arr_delay").over(carrier_year_window)
-    )
-#departure delay
-df = df.withColumn(
-    "carrier_year_hour_avg_dep_delay", mean("dep_delay").over(carrier_year_hour_window)
-    )
-df = df.withColumn(
-    "carrier_year_month_avg_dep_delay", mean("dep_delay").over(carrier_year_month_window)
-    )
-df = df.withColumn(
-    "carrier_year_avg_dep_delay", mean("dep_delay").over(carrier_year_window)
-    )
-# total delay
-df = df.withColumn(
-    "carrier_year_hour_avg_total_delay", mean("total_delay").over(carrier_year_hour_window)
-    )
-df = df.withColumn(
-    "carrier_year_month_avg_total_delay", mean("total_delay").over(carrier_year_month_window)
-    )
-df = df.withColumn(
-    "carrier_year_avg_total_delay", mean("total_delay").over(carrier_year_window)
-    )
-#num flights
-df = df.withColumn(
-    "carrier_year_hour_total_flights", count("flight").over(carrier_year_hour_window)
-    )
-df = df.withColumn(
-    "carrier_year_month_total_flights", count("flight").over(carrier_year_month_window)
-    )
-df = df.withColumn(
-    "carrier_year_total_flights", count("flight").over(carrier_year_window)
-    )
+dict_carrier_window_functions = {
+    "year_hour": carrier_year_hour_window,
+    "year_month": carrier_year_month_window,
+    "year_avg": carrier_year_window
+ }
+dict_route_window_functions = {
+    "year_hour": route_year_hour_window,
+    "year_month": route_year_month_window,
+    "year_avg": route_year_window
+ }
+list_columns_using_mean = ["arr_delay","dep_delay","total_delay"]
+list_columns_using_count = ["flight"]
 
-##### ROUTE ##################################
-#arrive delay
-df = df.withColumn(
-    "route_year_hour_avg_arr_delay", mean("arr_delay").over(route_year_hour_window)
-    )
-df = df.withColumn(
-    "route_year_month_avg_arr_delay", mean("arr_delay").over(route_year_month_window)
-    )
-df = df.withColumn(
-    "route_year_avg_arr_delay", mean("arr_delay").over(route_year_window)
-    )
-#departure delay
-df = df.withColumn(
-    "route_year_hour_avg_dep_delay", mean("dep_delay").over(route_year_hour_window)
-    )
-df = df.withColumn(
-    "route_year_month_avg_dep_delay", mean("dep_delay").over(route_year_month_window)
-    )
-df = df.withColumn(
-    "route_year_avg_dep_delay", mean("dep_delay").over(route_year_window)
-    )
-# total delay
-df = df.withColumn(
-    "route_year_hour_avg_total_delay", mean("total_delay").over(route_year_hour_window)
-    )
-df = df.withColumn(
-    "route_year_month_avg_total_delay", mean("total_delay").over(route_year_month_window)
-    )
-df = df.withColumn(
-    "route_year_avg_total_delay", mean("total_delay").over(route_year_window)
-    )
-#num flights
-df = df.withColumn(
-    "route_year_hour_total_flights", count("flight").over(route_year_hour_window)
-    )
-df = df.withColumn(
-    "route_year_month_total_flights", count("flight").over(route_year_month_window)
-    )
-df = df.withColumn(
-    "route_year_total_flights", count("flight").over(route_year_window)
-    )
+## carrier
+for column in list_columns_using_mean:
+    for key in dict_carrier_window_functions.keys():
+        partition_by_str = key
+        df = df.withColumn(f"carrier_{partition_by_str}_avg_{column}", mean(column).over(dict_carrier_window_functions[key]))
+
+for column in list_columns_using_count:
+    for key in dict_carrier_window_functions.keys():
+        partition_by_str = key
+        df = df.withColumn(f"carrier_{partition_by_str}_total_{column}", count(column).over(dict_carrier_window_functions[key]))
+
+
+## route
+for column in list_columns_using_mean:
+    for key in dict_route_window_functions.keys():
+        partition_by_str = key
+        df = df.withColumn(f"route_{partition_by_str}_avg_{column}", mean(column).over(dict_route_window_functions[key]))
+
+for column in list_columns_using_count:
+    for key in dict_route_window_functions.keys():
+        partition_by_str = key
+        df = df.withColumn(f"route_{partition_by_str}_total_{column}", mean(column).over(dict_route_window_functions[key]))
+
 
 
 #Creating analysis tables
