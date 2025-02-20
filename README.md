@@ -9,10 +9,10 @@ data_engineering_projects/
 │── README.md
 ```
 
-🚀 About
+## 🚀 About
 This repository serves as a collection of real-world Data Engineering solutions leveraging different cloud providers. Each folder contains code and documentation for cloud-native data processing, automation, and optimization.
 
-📌 How to Use
+## 📌 How to Use
 Navigate to the cloud provider respective folder to explore the projects.
 Follow the documentation inside each project for setup and execution.
 Contributions and suggestions are welcome! Feel free to open an issue or submit a PR.
