@@ -1,2 +1,8 @@
 .env
 Example_Cases
+pipeline-weather-data/.env
+__pycache__
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup

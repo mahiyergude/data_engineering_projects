@@ -18,7 +18,7 @@ The ETL pipeline follows these steps:
 
 Below you can see the diagram:
 
-![diagram](../src/aws_etl_flight_data_diagram.png)
+![diagram](./src/aws_etl_flight_data_diagram.png)
 
 
 ## IAM

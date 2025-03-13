@@ -15,7 +15,7 @@ This repository serves as a collection of real-world Data Engineering solutions 
 ## 📌 How to Use
 Navigate to the cloud provider respective folder to explore the projects.
 Follow the documentation inside each project for setup and execution.
-Contributions and suggestions are welcome! Feel free to open an issue or submit a PR.
+Contributions and suggestions are welcome!
 
 
 Happy coding! 🚀

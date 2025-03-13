@@ -10,7 +10,7 @@ phases:
   pre_build:
     commands:
       - echo Uploading the script to S3...
-      - aws s3 cp --recursive $PATH_SCRIPT s3://scripts-personal-projects/aws_glue/$PROJECT_NAME
+      - aws s3 cp --recursive $PATH_SCRIPT s3://scripts-personal-projects/aws_glue/$PROJECT_NAME --exclude "src/*"
 
   build:
     commands:
