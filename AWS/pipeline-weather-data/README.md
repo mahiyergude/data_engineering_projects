@@ -32,7 +32,7 @@ For a detailed explanation, check out my Medium post: [Medium Article](https://x
 | weather_actual_data_timeseries_agg  | Aggregates actual data by year,month,hour,location_id.      |
 | weather_forecast_data_timeseries    | Stores time-series forecast data.                           |
 
-#### Data Model
+### **Data Model:**
 ![architecture_project_draw](./src/data_model_weather_data.png)
 
 ---
