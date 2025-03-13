@@ -9,7 +9,7 @@ This project implements a data pipeline to extract weather data using an externa
 2. **AWS Glue Job:** Processes the raw weather data stored in S3 and loads it into a structured format using Apache Iceberg tables.
 3. **Snowflake:** Serves as the final data warehouse, enabling efficient BI analysis and reporting.
 
-For a detailed explanation, check out my Medium post: [Medium Article](https://xxxxxx)
+For a detailed explanation, check out my Medium post: [Medium Article](https://medium.com/@claudiofilho22/end-to-end-data-engineering-project-using-aws-apache-iceberg-snowflake-90b76e7a1082)
 
 
 ## Project Folder Structure
