@@ -19,3 +19,11 @@ Contributions and suggestions are welcome!
 
 
 Happy coding! 🚀
+
+## Author
+Claudio César
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?logo=linkedin)](https://www.linkedin.com/in/claudio-c%C3%A9sar-506961164/)
+
+[![Medium](https://img.shields.io/badge/Medium-black?style=flat&logo=medium)](https://medium.com/@claudiofilho22)
+
