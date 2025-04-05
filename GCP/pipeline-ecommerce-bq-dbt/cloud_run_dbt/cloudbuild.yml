@@ -1,0 +1,67 @@
+substitutions:
+  _SERVICE_NAME: 'pipeline-ecommerce-bq-dbt'
+  _PROJECT_ID: 'ecommerce-analysis-455200'
+  _REGION: 'us-central1'
+  _IMAGE_NAME: '${_SERVICE_NAME}'
+  _AR_REPO: 'cloud-run'
+  _PATH: 'GCP/pipeline-ecommerce-bq-dbt/cloud_run_dbt'
+  _BUILD_SA: 'cloudbuild-runner-sa@ecommerce-analysis-455200.iam.gserviceaccount.com'
+  _RUN_SA: 'dbt-runner-sa@ecommerce-analysis-455200.iam.gserviceaccount.com'
+
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: Ensure Artifact Registry Repo Exists
+    entrypoint: bash
+    args:
+      - '-c'
+      - |
+        gcloud artifacts repositories describe ${_AR_REPO} --location=${_REGION} --project=$PROJECT_ID &> /dev/null
+        if [ $$? -ne 0 ]; then
+          echo "Artifact Registry repository ${_AR_REPO} not found in project $PROJECT_ID region ${_REGION}. Creating..."
+          gcloud artifacts repositories create ${_AR_REPO} \
+            --repository-format=docker \
+            --location=${_REGION} \
+            --description="Docker repository created by Cloud Build" \
+            --project=$PROJECT_ID
+        else
+          echo "Artifact Registry repository ${_AR_REPO} already exists in project $PROJECT_ID region ${_REGION}."
+        fi
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Build
+    dir: ${_PATH}
+    args:
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE_NAME}:$SHORT_SHA'
+      - '.'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Push
+    args:
+      - 'push'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE_NAME}:$SHORT_SHA'
+    waitFor: ['Build']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: Deploy
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_SERVICE_NAME}'
+      - '--image=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE_NAME}:$SHORT_SHA'
+      - '--region=${_REGION}'
+      - '--platform=managed'
+      - '--quiet'
+      - '--no-allow-unauthenticated'
+      - '--build-service-account=projects/${_PROJECT_ID}/serviceAccounts/${_BUILD_SA}'
+      - '--service-account=${_RUN_SA}'
+      - '--project=$PROJECT_ID'
+    waitFor: ['Push']
+
+images:
+  - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE_NAME}:$SHORT_SHA'
+
+options:
+  logging: CLOUD_LOGGING_ONLY

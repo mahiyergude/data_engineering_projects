@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: dim_customers_stg
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_orders_stg
+    columns:
+      - name: order_id
+        data_tests:
+          - unique
+          - not_null
+
+  - name: dim_products_stg
+    columns:
+      - name: product_id
+        data_tests:
+          - unique
+          - not_null
+        
+  - name: dim_sellers_stg
+    columns:
+      - name: seller_id
+        data_tests:
+          - unique
+          - not_null
+
+  - name: fact_order_items_stg
+    columns:
+      - name: order_item_id
+        data_tests:
+          - not_null
+      - name: order_id
+        data_tests:
+          - not_null
+      - name: product_id
+        data_tests:
+          - not_null
+      - name: seller_id
+        data_tests:
+          - not_null
+
+  - name: fact_order_payments_stg
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
