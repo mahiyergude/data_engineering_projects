@@ -119,7 +119,7 @@ This project uses Terraform to manage infrastructure on GCP. Below is an overvie
    ```
 5. **Generate the service account files in a JSON**  
    ```sh
-   jq -r '.airflow_service_account_key_base64.value' outputs_tf.json | base64 --decode > airflow_service_account.json
+   jq -r '.airflow_service_account_key_base64.value' outputs_tf.json | base64 --decode > ../airflow/keys/airflow_service_account.json
    ```
 
 Optionally, to destroy resources:  
