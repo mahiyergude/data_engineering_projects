@@ -1,0 +1,13 @@
+pipeline_ecommerce:
+  outputs:
+    dev:
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      location: US
+      method: oauth
+      priority: interactive
+      project: ecommerce-analysis-455200
+      dataset: ecommerce
+      threads: 3
+      type: bigquery
+  target: dev
