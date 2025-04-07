@@ -18,7 +18,7 @@ This project implements a modern data pipeline for processing ecommerce data, le
    - **Storage & Analysis:** Processed data is stored in and analyzed with BigQuery for business intelligence and reporting
 
 
-For a detailed explanation, check out my Medium post: [Medium Article](https://medium.com/@claudiofilho22/end-to-end-data-engineering-project-using-aws-apache-iceberg-snowflake-90b76e7a1082)
+For a detailed explanation, check out my Medium post: [Medium Article](https://medium.com/@claudiofilho22/end-to-end-data-engineering-project-using-dbt-bigquery-cloud-run-eae10e0c7dc3)
 
 
 ## Project Folder Structure
@@ -82,6 +82,7 @@ You must enable the following APIs in your Google Cloud project:
 - **Cloud Build API** - Allows you to build container images in the cloud
 - **Secret Manager API** - Provides secure storage for sensitive configuration values
 - **Cloud Run Admin API** - Enables deployment and management of Cloud Run services
+- **Artifact Registry API** - Securely stores and manages container images and artifacts in the cloud.
 
 ### Setting Up Repository Connection
 You'll also need to connect your repository Github to Cloud Build (1st generation) for continuous integration.
