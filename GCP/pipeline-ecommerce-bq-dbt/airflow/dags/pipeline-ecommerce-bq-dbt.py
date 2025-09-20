@@ -95,7 +95,7 @@ with DAG(
 ) as dag:
 
     GCP_PROJECT_ID = "ecommerce-demo-123"
-    BQ_DATASET = "your_bq_dataset"
+    BQ_DATASET = "ecommerce_raw"
     BQ_DESTINATION_TABLE = "your_destination_table_name"
     BQ_LOCATION = "US"
     list_files = [
