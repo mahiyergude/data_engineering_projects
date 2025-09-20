@@ -8,7 +8,7 @@ variable "branch_name" {
 variable "repo_owner" {
   description = "The owner (username or organization) of the GitHub repository."
   type        = string
-  default     = "claudiocmm"
+  default     = "mahiyergude"
 }
 
 variable "repo_name" {
@@ -42,7 +42,7 @@ resource "google_cloudbuild_trigger" "main_branch_trigger" {
   }
 
   included_files = ["GCP/pipeline-ecommerce-bq-dbt/cloud_run_dbt/**"]
-  service_account = "projects/ecommerce-analysis-455200/serviceAccounts/${google_service_account.cloud_build_service_account.email}"
+  service_account = "projects/ecommerce-demo-123/serviceAccounts/${google_service_account.cloud_build_service_account.email}"
   include_build_logs = "INCLUDE_BUILD_LOGS_WITH_STATUS"
 
 }
