@@ -14,7 +14,7 @@ variable "repo_owner" {
 variable "repo_name" {
   description = "The name of the GitHub repository."
   type        = string
-  default     = "data_engineering_projects_temp"
+  default     = "data_engineering_projects"
 }
 
 variable "cloudbuild_connection_name" {
