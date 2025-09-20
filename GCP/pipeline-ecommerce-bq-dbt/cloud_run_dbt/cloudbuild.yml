@@ -1,12 +1,12 @@
 substitutions:
   _SERVICE_NAME: 'pipeline-ecommerce-bq-dbt'
-  _PROJECT_ID: 'ecommerce-analysis-455200'
+  _PROJECT_ID: 'ecommerce-demo-123'
   _REGION: 'us-central1'
   _IMAGE_NAME: '${_SERVICE_NAME}'
   _AR_REPO: 'cloud-run'
   _PATH: 'GCP/pipeline-ecommerce-bq-dbt/cloud_run_dbt'
-  _BUILD_SA: 'cloudbuild-runner-sa@ecommerce-analysis-455200.iam.gserviceaccount.com'
-  _RUN_SA: 'dbt-runner-sa@ecommerce-analysis-455200.iam.gserviceaccount.com'
+  _BUILD_SA: 'cloudbuild-runner-sa@ecommerce-demo-123.iam.gserviceaccount.com'
+  _RUN_SA: 'dbt-runner-sa@ecommerce-demo-123.iam.gserviceaccount.com'
 
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
