@@ -94,7 +94,7 @@ with DAG(
     description="Dag to run the Ecommerce Pipeline using BigQuery, Cloud Run and DBT"
 ) as dag:
 
-    GCP_PROJECT_ID = "your-gcp-project-id"
+    GCP_PROJECT_ID = "ecommerce-demo-123"
     BQ_DATASET = "your_bq_dataset"
     BQ_DESTINATION_TABLE = "your_destination_table_name"
     BQ_LOCATION = "US"
@@ -121,7 +121,7 @@ with DAG(
         task_id='run_cloud_service_dbt',
         python_callable=invoke_cloud_run,
         op_kwargs={
-            'service_url': "https://pipeline-ecommerce-bq-dbt-131772725043.us-central1.run.app/run_transformation",
+            'service_url': "https://pipeline-ecommerce-bq-dbt-312417348650.us-central1.run.app/run_transformation",
             'method': "POST",
             'payload': {},
             # Add any other parameters your function might need
@@ -135,7 +135,7 @@ with DAG(
             LOAD DATA OVERWRITE ecommerce_raw.{file}
             FROM FILES (
             format = 'CSV',
-            uris = ['gs://ecommerce_data_staging/{file}.csv']);
+            uris = ['gs://ecommerce-data-staging-2025/{file}.csv']);
         """
 
         run_bq_query_job = BigQueryExecuteQueryOperator(
