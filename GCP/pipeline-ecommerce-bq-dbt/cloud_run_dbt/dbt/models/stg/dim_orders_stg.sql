@@ -12,4 +12,4 @@ SELECT
     ,S.order_estimated_delivery_date
     ,CURRENT_TIMESTAMP() AS last_extract_ts
 
-FROM `ecommerce-analysis-455200.ecommerce_raw.olist_orders_dataset` S
+FROM `ecommerce-demo-123.ecommerce_raw.olist_orders_dataset` S
