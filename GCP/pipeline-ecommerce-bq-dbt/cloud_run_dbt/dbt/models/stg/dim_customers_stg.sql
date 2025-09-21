@@ -8,7 +8,7 @@ WITH GEOLOC AS (
             geolocation_zip_code_prefix
             ,geolocation_city
             ,geolocation_state 
-        FROM`ecommerce-analysis-455200.ecommerce_raw.olist_geolocation_dataset` 
+        FROM`ecommerce-demo-123.ecommerce_raw.olist_geolocation_dataset` 
         )
 
     --Removing cases where the zip_code is returning different city names
@@ -22,7 +22,7 @@ SELECT DISTINCT
     ,COALESCE(G.geolocation_state, S.customer_state) as customer_state
     ,CURRENT_TIMESTAMP() AS last_extract_ts
 
-FROM `ecommerce-analysis-455200.ecommerce_raw.olist_customers_dataset` S
+FROM `ecommerce-demo-123.ecommerce_raw.olist_customers_dataset` S
 
 LEFT JOIN GEOLOC AS G ON
     1=1 AND
