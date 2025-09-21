@@ -5,4 +5,4 @@ __pycache__
 .terraform
 .terraform.lock.hcl
 terraform.tfstate
-terraform.tfstate.backup
+terraform.tfstate.backupGCP/pipeline-ecommerce-bq-dbt/airflow/keys/*.json
