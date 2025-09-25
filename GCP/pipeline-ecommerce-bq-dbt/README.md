@@ -18,7 +18,6 @@ This project implements a modern data pipeline for processing ecommerce data, le
    - **Storage & Analysis:** Processed data is stored in and analyzed with BigQuery for business intelligence and reporting
 
 
-For a detailed explanation, check out my Medium post: [Medium Article](https://medium.com/@claudiofilho22/end-to-end-data-engineering-project-using-dbt-bigquery-cloud-run-eae10e0c7dc3)
 
 
 ## Project Folder Structure
