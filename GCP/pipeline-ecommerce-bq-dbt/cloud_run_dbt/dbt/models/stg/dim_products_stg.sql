@@ -12,5 +12,5 @@ SELECT DISTINCT
     ,S.product_width_cm
     ,CURRENT_TIMESTAMP() AS last_extract_ts
 
-FROM `ecommerce-demo-123.ecommerce_raw.olist_products_dataset` S
+FROM `ecommerce-demo-123-488221.ecommerce_raw.olist_products_dataset` S
  
