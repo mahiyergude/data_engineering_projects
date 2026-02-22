@@ -6,7 +6,7 @@ pipeline_ecommerce:
       location: US
       method: oauth
       priority: interactive
-      project: 
+      project: ecommerce-demo-123-488221
       dataset: ecommerce_raw
       threads: 3
       type: bigquery
