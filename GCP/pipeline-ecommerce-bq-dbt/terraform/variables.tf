@@ -3,7 +3,7 @@
 variable "project_id" {
   description = "The Google Cloud project ID where resources will be created."
   type        = string
-  default     = "ecommerce-demo-123"
+  default     = "ecommerce-demo-123-488221"
 }
 
 variable "region" {
