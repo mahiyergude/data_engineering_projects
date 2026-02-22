@@ -42,7 +42,7 @@ resource "google_cloudbuild_trigger" "main_branch_trigger" {
   }
 
   included_files = ["GCP/pipeline-ecommerce-bq-dbt/cloud_run_dbt/**"]
-  service_account = "projects/ecommerce-demo-123/serviceAccounts/${google_service_account.cloud_build_service_account.email}"
+  service_account = "projects/ecommerce-demo-123-488221/serviceAccounts/${google_service_account.cloud_build_service_account.email}"
   include_build_logs = "INCLUDE_BUILD_LOGS_WITH_STATUS"
 
 }
