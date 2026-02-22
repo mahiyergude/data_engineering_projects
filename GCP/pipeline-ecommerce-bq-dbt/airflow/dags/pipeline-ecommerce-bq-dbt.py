@@ -94,7 +94,7 @@ with DAG(
     description="Dag to run the Ecommerce Pipeline using BigQuery, Cloud Run and DBT"
 ) as dag:
 
-    GCP_PROJECT_ID = "ecommerce-demo-123"
+    GCP_PROJECT_ID = "ecommerce-demo-123-488221"
     BQ_DATASET = "ecommerce_raw"
     BQ_DESTINATION_TABLE = "your_destination_table_name"
     BQ_LOCATION = "US"
