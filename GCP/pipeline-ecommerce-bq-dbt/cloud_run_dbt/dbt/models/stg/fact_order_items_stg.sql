@@ -11,4 +11,4 @@ SELECT
     ,S.freight_value
     ,CURRENT_TIMESTAMP() AS last_extract_ts
 
-FROM `ecommerce-demo-123.ecommerce_raw.olist_order_items_dataset` S
+FROM `ecommerce-demo-123-488221.ecommerce_raw.olist_order_items_dataset` S
