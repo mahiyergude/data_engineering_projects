@@ -95,7 +95,7 @@ variable "gcs_bucket_location" {
 variable "gcs_bucket_name_prefix" {
   description = "Prefix for the GCS bucket name. Project ID will be appended for uniqueness."
   type        = string
-  default     = "ecommerce_data_staging"
+  default     = "ecommerce-data-staging-mahi-488221"
 }
 
 variable "local_data_path" {
