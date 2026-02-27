@@ -135,7 +135,7 @@ with DAG(
             LOAD DATA OVERWRITE ecommerce_raw.{file}
             FROM FILES (
             format = 'CSV',
-            uris = ['gs://ecommerce-data-staging-2025/{file}.csv']);
+            uris = ['gs://ecommerce-data-staging-mahi-488221/{file}.csv']);
         """
 
         run_bq_query_job = BigQueryExecuteQueryOperator(
