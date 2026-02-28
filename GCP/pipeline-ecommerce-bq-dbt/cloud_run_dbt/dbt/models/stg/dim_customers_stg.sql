@@ -16,8 +16,7 @@ WITH GEOLOC AS (
 )
 
 SELECT DISTINCT
-    S.customer_id,
-    UPPER(S.customer_id) as cust_id_upper
+    S.customer_id
     ,S.customer_unique_id
     ,COALESCE(G.geolocation_city, S.customer_city) as customer_city
     ,COALESCE(G.geolocation_state, S.customer_state) as customer_state
