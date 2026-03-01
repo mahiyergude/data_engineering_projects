@@ -3,6 +3,7 @@
 
 SELECT
     S.order_id
+    ,upper(S.order_status) as order_status_upp
     ,S.customer_id
     ,S.order_status
     ,S.order_purchase_timestamp
