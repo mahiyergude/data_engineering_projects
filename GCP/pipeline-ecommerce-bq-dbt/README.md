@@ -178,9 +178,4 @@ Below you can see the dag created by `airflow/dags/pipeline-ecommerce-bq-dbt.py`
 ![dag_airflow](./src/dag_airflow.png)
 
 
-## Author
-Claudio César
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?logo=linkedin)](https://www.linkedin.com/in/claudio-c%C3%A9sar-506961164/)
-
 
