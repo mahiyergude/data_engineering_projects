@@ -40,17 +40,17 @@ variable "pipeline_name" {
 variable "aws_iam_user_arn_by_snowflake" {
   type        = string
   description = "Iam user ARN by snowflake"
-  default     = "arn:aws:iam::xxxxxxxxx:user/yubx0000-s" // Replace with your Iam user ARN by snowflake
+  default     = "arn:aws:iam::115005006440:user/yuzf1000-s" // Replace with your Iam user ARN by snowflake
 }
 
 variable "glue_aws_external_id_by_snowflake" {
   type        = string
   description = "Glue aws external id by snowflake"
-  default     = "xxxxxxxxxxxxxxxxxxx" // Replace with your Glue aws external id by snowflake
+  default     = "LJ79706_SFCRole=3_SbxFa3yJbekriVcVaNpBLW6NzyE=" // Replace with your Glue aws external id by snowflake
 }
 
 variable "storage_aws_external_id_by_snowflake" {
   type        = string
   description = "Storage aws external id by snowflake"
-  default     = "xxxxxxxxxxxxxxxxxxx" // Replace with your Storage aws external id by snowflake
+  default     = "LJ79706_SFCRole=3_Bl+JAIDmGLiYbt6a3SgdGAY69PY=" // Replace with your Storage aws external id by snowflake
 }
