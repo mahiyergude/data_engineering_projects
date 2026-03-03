@@ -1,7 +1,7 @@
 variable "github_owner" {
   type        = string
   description = "GitHub repository owner (username or organization)"
-  default     = "claudiocmm"
+  default     = "mahiyergude"
 }
 
 variable "github_repo" {
@@ -13,13 +13,13 @@ variable "github_repo" {
 variable "account_id" {
   type        = string
   description = "Account Id AWS"
-  default     = "xxxxxxxxx" // Replace with your account id
+  default     = "796174527543" // Replace with your account id
 }
 
 variable "region" {
   type        = string
   description = "Region AWS"
-  default     = "us-east-1"
+  default     = "eu-central-1"
 }
 
 variable "lambda_function_name" {
