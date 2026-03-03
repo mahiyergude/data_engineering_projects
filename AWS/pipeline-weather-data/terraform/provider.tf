@@ -1,5 +1,5 @@
 provider "aws" {
-  region  = "us-east-1" # Change this to your desired region
+  region  = "eu-central-1" # Change this to your desired region
 #   profile = "dev"
 }
 
