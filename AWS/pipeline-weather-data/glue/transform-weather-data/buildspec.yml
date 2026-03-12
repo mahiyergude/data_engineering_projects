@@ -4,7 +4,7 @@ env:
   variables:
     PROJECT_NAME: "pipeline-weather-data"
     GLUE_JOB_NAME: "transform-weather-data"  
-    BUCKET_NAME: "weather-datalake-projects-scripts"
+    BUCKET_NAME: "weather-datalake-scripts-796174527543"
     
 phases:
   pre_build:
